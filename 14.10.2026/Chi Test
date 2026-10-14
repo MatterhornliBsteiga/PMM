@@ -1,0 +1,31 @@
+
+**a)** Wie viele gültige Messungen hat die Tabelle insgesamt?
+______________ Warum nicht 120? ____________________
+
+116 sind gültig
+
+**b)** Wie viele Ausschusteile wären bei **Unabhängigkeit** (H0) in Zeile
+M1 zu erwarten? Rechne die Formel von Hand:
+
+6 Ausschussteile
+
+**c)** Wie viele der sechs Zellen liegen erwartungsgemäß unter 5? Die Regel
+verlangt: mindestens 80 % müssen &ge; 5 sein. Ist sie hier erfüllt?
+____________ Welches Testverfahren folgt daraus? ____________________
+
+3 von 6, also 50%. Daraus folgt der Test von Fisher.
+
+## 2. Die Teststatistik von Hand
+
+**a)** Berechne den Beitrag jeder der drei Zellen in der Spalte
+„außerhalb":
+
+
+
+**b)** Berechne dieselbe Tabelle mit R und vergleiche Zelle für Zelle.
+Wo weicht deine Handrechnung am stärksten ab, und warum?
+
+**c)** Welche Zelle trägt den größten Beitrag bei? Ist das die Zelle mit
+der größten relativen Abweichung, oder die mit dem kleinsten Nenner?
+Begründe. ____________________
+
