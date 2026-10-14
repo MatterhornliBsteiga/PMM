@@ -2,12 +2,17 @@
 **a)** Wie viele gültige Messungen hat die Tabelle insgesamt?
 ______________ Warum nicht 120? ____________________
 
-116 sind gültig
+Es gibt insgesamt 116 gültige Messungen. Von den ursprünglich 120 Messungen fehlen vier Werte. Diese werden als NA behandelt und nicht in die Auswertung einbezogen.
 
 **b)** Wie viele Ausschusteile wären bei **Unabhängigkeit** (H0) in Zeile
 M1 zu erwarten? Rechne die Formel von Hand:
 
-6 Ausschussteile
+Zeilensumme M1: 37
+Spaltensumme „außerhalb“: 6
+Gesamtsumme: 116
+E=GesamtsummeZeilensumme⋅Spaltensumme​
+E=37*6/116=222/116=1,91
+Bei M1 wären das unter der Nullhypothese ungefähr 1,91 Ausschussteile, also min. 1 Teil.
 
 **c)** Wie viele der sechs Zellen liegen erwartungsgemäß unter 5? Die Regel
 verlangt: mindestens 80 % müssen &ge; 5 sein. Ist sie hier erfüllt?
@@ -20,12 +25,108 @@ ____________ Welches Testverfahren folgt daraus? ____________________
 **a)** Berechne den Beitrag jeder der drei Zellen in der Spalte
 „außerhalb":
 
-
+(O-E)^2/E
+(0-1,91)^2/1,91=1,91
+(6-2,07)^2/2,07=7,47
+1,91+2,02+7,47=11,40
 
 **b)** Berechne dieselbe Tabelle mit R und vergleiche Zelle für Zelle.
 Wo weicht deine Handrechnung am stärksten ab, und warum?
+
+M3 weicht am meisten ab.
+| Maschine | Außerhalb | In Toleranz |
+| -------- | --------: | ----------: |
+| M1       |    1,9138 |      0,1044 |
+| M2       |    2,0172 |      0,1100 |
+| M3       |    7,4690 |      0,4074 |
 
 **c)** Welche Zelle trägt den größten Beitrag bei? Ist das die Zelle mit
 der größten relativen Abweichung, oder die mit dem kleinsten Nenner?
 Begründe. ____________________
 
+Die Zelle M3 außerhalb trägt mit ungefähr 7,47 den größten Beitrag bei. Dort wurden sechs Ausschussteile beobachtet, obwohl nur etwa 2,07 erwartet wurden. Der Beitrag hängt sowohl von der Abweichung zwischen beobachtetem und erwartetem Wert als auch von der erwarteten Häufigkeit im Nenner ab. Die Zelle mit dem kleinsten Nenner muss daher nicht automatisch den größten Beitrag liefern.
+
+## 3. Der Unabhängigkeitstest
+**a)** Wie berechnet man die df? Zeige die Formel und die Zahlen:
+
+df = ( Zeilen − 1) · ( Spalten − 1) = (3-1) · (2-1) = 2
+
+**b)** R gibt eine Warnung aus. Schreib sie wörtlich auf:
+
+Warning message:
+In chisq.test(tab) : Chi-squared approximation may be incorrect
+
+**c)** Übersetze den Chi-p-Wert in einen deutschen Satz, in dem die Zahl
+0,0025 vorkommt. Dann sag, was daraus folgt (H0 verwerfen oder
+behalten). 
+
+Wenn kein Zusammenhang zwischen der verwendeten Maschine und der Toleranzlage bestünde, wäre eine mindestens so starke Abweichung wie die beobachtete unter den Annahmen des Chi-Quadrat-Tests in ungefähr 0,25 % der Fälle zu erwarten. Da p=0,0025<0,05 ist, wird die Nullhypothese verworfen. Wegen der zu kleinen erwarteten Häufigkeiten ist die Chi-Quadrat-Näherung hier allerdings problematisch. Der Fisher-Test liefert mit p=0,0032 ebenfalls ein signifikantes Ergebnis und ist in dieser Situation die geeignetere Auswertung.
+
+## 4. Der Anpassungstest
+**a)** Rechne die Anpassungstests für alle drei Maschinen:
+
+Maschine M1: EinToleranz=> 37⋅0,9=33,3 EaußToleranz=> 37⋅0,1=3,7
+Maschine M2: EinToleranz=> 39⋅0,9=35,1  EaußToleranz=> 39⋅0,1=3,9
+Maschine M3: EinToleranz=> 40⋅0,9=36  EaußToleranz=> 40⋅0,1=4
+
+**b)** Welche Maschine fällt statistisch auf? In <strong>welche
+Richtung</strong> weicht sie ab — und wie erkennst du das, wenn der Test
+nur einen p-Wert liefert? ____________________
+
+Bei einem Signifikanzniveau von 5 % weichen M1 und M2 statistisch signifikant von der vorgegebenen Ausschussquote ab. Beide Maschinen haben weniger Ausschussteile als erwartet, nämlich jeweils null statt 3,7 beziehungsweise 3,9.
+M3 weist sechs Ausschussteile bei 40 Messungen auf. Das entspricht einer Ausschussquote von 15 %. Der p-Wert von 0,2918 ist jedoch größer als 0,05. Daher ist die Abweichung von der Sollquote statistisch nicht signifikant.
+Die Chi-Quadrat-Näherung ist bei allen drei Maschinen wegen der kleinen erwarteten Häufigkeiten mit Vorsicht zu betrachten.
+
+**c)** Erkläre in 3 Sätzen, warum ein Anpassungstest gegen eine
+Sollverteilung <em>kein</em> Güftest für den Prozess ist.
+
+Ein Anpassungstest prüft, ob sich die beobachtete Häufigkeitsverteilung statistisch signifikant von einer vorgegebenen Sollverteilung unterscheidet. Er unterscheidet dabei nicht zwischen einer positiven und einer negativen Abweichung, sondern erkennt Abweichungen in beide Richtungen. Deshalb kann er allein nicht beurteilen, ob ein Prozess gut oder schlecht ist.
+
+**d)** M3 hat 6 von 40 Ausschusteilen, M1 und M2 keine. Welche Frage
+beantwortet der Anpassungstest, und welche <em>nicht</em>?
+
+Beantwortet: Ob die beobachtete Ausschussquote einer einzelnen Maschine statistisch signifikant von der vorgegebenen Ausschussquote von 10 % abweicht. Beantwortet nicht: Ob eine Maschine grundsätzlich besser oder schlechter als die anderen Maschinen ist oder ob sie die Ursache für den Ausschuss darstellt.
+
+## 5. Voraussetzungen prüfen
+
+**a)** Welche der sechs erwarteten Häufigkeiten liegen unter 5? Trage sie ein:
+
+M1 außerhalb: 1,91
+M2 außerhalb: 2,02
+M3 außerhalb: 2,07 
+Wie viele Prozent der Zellen sind das? 3/6​⋅100=50%
+
+**b)** Die 80-%-Regel verlangt also: erfüllt / nicht erfüllt
+(nicht erfüllt). Was bedeutet das für die Verlässlichkeit von
+`p = 0,0025`? Der p-Wert von 0,0025 aus dem Chi-Quadrat-Test ist daher aufgrund der unzureichenden Näherung mit Vorsicht zu interpretieren. Der exakte Fisher-Test ist hier besser geeignet und ergibt einen p-Wert von ungefähr 0,0032.
+
+**c)** R gibt <em>auch</em> beim Anpassungstest aus Aufgabe 4 eine
+Warnung aus. Führe ihn ohne `suppressWarnings()` aus und notiere den Wortlaut.
+Warum? Überlege, wie viele Fälle je Zelle erwartet werden — bei M1 sind
+das 37 in Toleranz gegen 3,7 außerhalb. Was folgt daraus für die
+Verlässlichkeit aller p-Werte in Aufgabe 4? ____________________
+
+Die Warnung entsteht, weil die erwarteten Häufigkeiten der Ausschusskategorie bei M1, M2 und M3 nur 3,7, 3,9 beziehungsweise 4 betragen und damit unter 5 liegen. Deshalb ist die Chi-Quadrat-Näherung auch bei diesen Anpassungstests problematisch. Die p-Werte in Aufgabe 4 sind daher nur eingeschränkt verlässlich und sollten mit einem geeigneten exakten Test überprüft werden.
+
+## 6. Kapitel-Check (Navarro Kap. 12)
+
+**a)** Nenne die **drei** Voraussetzungen des Chi-Quadrat-Tests aus dem
+Kapitel und prüfe, welche in diesem Datensatz erfüllt sind:
+
+1. Die Daten müssen Häufigkeiten kategorialer Merkmale darstellen.
+2. Die Beobachtungen müssen unabhängig voneinander sein.
+3. Die erwarteten Häufigkeiten müssen ausreichend groß sein.
+
+**b)** Erkläre den Unterschied zwischen Unabhängigkeitstest und
+Anpassungstest in eigenen Worten: Welche Frage stellt welcher, und wie
+wird in R der Unterschied am Aufruf sichtbar? ____________________
+
+Ein Unabhängigkeitstest prüft, ob zwei kategoriale Merkmale miteinander zusammenhängen. Hier wird untersucht, ob die verwendete Maschine und die Toleranzlage eines Werkstücks voneinander unabhängig sind.
+Ein Anpassungstest prüft dagegen, ob die beobachtete Verteilung zu einer vorgegebenen Verteilung passt. Hier wird untersucht, ob die Ausschussquote einer Maschine mit der Sollquote von 10 % vereinbar ist.
+In R erkennt man den Unterschied am Funktionsaufruf: Beim Unabhängigkeitstest wird eine Kreuztabelle übergeben, beispielsweise chisq.test(tab). Beim Anpassungstest werden Häufigkeiten und die vorgegebenen Wahrscheinlichkeiten übergeben, beispielsweise chisq.test(c(34, 6), p = c(0.9, 0.1)).
+
+**c)** Ein Kollege sagt: „Der Chi-Test sagt, dass M3 schlecht ist, weil
+0,0025 < 0,05." Hat er recht? Begründe in 2 Sätzen — denke an Richtung
+und daran, was ein Anpassungstest gerade <em>nicht</em> kann.
+
+Nein, denn der p-Wert von 0,0025 stammt aus dem Unabhängigkeitstest und zeigt, dass ein statistischer Zusammenhang zwischen Maschine und Toleranzlage vorliegt; er beweist nicht, dass M3 schlecht ist. Der Anpassungstest für M3 ergibt p=0,2918 , sodass keine statistisch signifikante Abweichung von der Sollquote von 10 % nachgewiesen wird.
